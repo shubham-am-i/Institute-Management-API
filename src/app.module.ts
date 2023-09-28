@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 // local imports
 import { InstituteModule } from './institute/institute.module';
 import { configValidationSchema } from './config.schema';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -27,7 +28,8 @@ import { configValidationSchema } from './config.schema';
         synchronize: true
       })
     }),
-    InstituteModule
+    InstituteModule,
+    AuthModule
   ],
 
 })

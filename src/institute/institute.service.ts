@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 // external imports
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -27,19 +27,44 @@ export class InstituteService {
     return await this.institute.save(institute);
   }
 
-  findAll() {
-    return `This action returns all institute`;
+  async findAll(): Promise<Institute[]> {
+    return await this.institute.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} institute`;
+  async findOne(id: number): Promise<Institute> {
+    const institute = await this.institute.findOneBy({ id });
+
+    if (!institute) {
+      throw new NotFoundException(`institute with id ${id} not found.`);
+    }
+
+    return institute;
   }
 
-  update(id: number, updateInstituteDto: UpdateInstituteDto) {
-    return `This action updates a #${id} institute`;
+  async update(id: number, updateInstituteDto: UpdateInstituteDto): Promise<Institute> {
+    let institute = await this.findOne(id);
+
+    if (institute) {
+      const updateFields = Object.keys(updateInstituteDto);
+      updateFields.forEach(field => {
+        if (updateInstituteDto[field] !== undefined) {
+          institute[field] = updateInstituteDto[field];
+        }
+      });
+
+      institute = await this.institute.save(institute);
+    }
+
+    return institute;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} institute`;
+  async remove(id: number): Promise<object> {
+    const result = await this.institute.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`institute with id ${id} not found.`);
+    }
+
+    return result;
   }
 }

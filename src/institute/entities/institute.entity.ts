@@ -7,13 +7,10 @@ export class Institute {
     id: number;
 
     @Column()
-    username: string;
+    name: string;
 
     @Column({ unique: true })
     email: string;
-
-    @Column()
-    password: string;
 
     @Column()
     description: string;

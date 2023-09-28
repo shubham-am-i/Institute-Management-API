@@ -1,14 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { InstituteService } from './institute.service';
+
 import { CreateInstituteDto } from './dto/create-institute.dto';
 import { UpdateInstituteDto } from './dto/update-institute.dto';
+import { Institute } from './entities/institute.entity';
+import { InstituteService } from './institute.service';
 
 @Controller('institute')
 export class InstituteController {
   constructor(private readonly instituteService: InstituteService) {}
 
   @Post()
-  create(@Body() createInstituteDto: CreateInstituteDto) {
+  create(@Body() createInstituteDto: CreateInstituteDto): Promise<Institute> {
     return this.instituteService.create(createInstituteDto);
   }
 

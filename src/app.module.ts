@@ -23,7 +23,8 @@ import { configValidationSchema } from './config.schema';
         port: configService.getOrThrow('DB_PORT'),
         username: configService.getOrThrow('DB_USERNAME'),
         password: configService.getOrThrow('DB_PASSWORD'),
-        database: configService.getOrThrow('DB_DATABASE')
+        database: configService.getOrThrow('DB_DATABASE'),
+        synchronize: true
       })
     }),
     InstituteModule

@@ -4,22 +4,22 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ExtractJwt, Strategy } from "passport-jwt";
+import { ConfigService } from "@nestjs/config";
 
-import { User } from "./user.entity";
-import { JwtPayload } from "./interface";
+import { User } from "../user.entity";
+import { JwtPayload } from "../interface";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    private users: Repository<User>;
     constructor(
         @InjectRepository(User)
-        users: Repository<User>
+        private readonly users: Repository<User>,
+        private readonly configService: ConfigService, // Inject ConfigService
     ) {
         super({
-            secretOrKey: 'myeyesdontlikelightide',
+            secretOrKey: configService.get<string>('JWT_SECRET'),
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         });
-        this.users = users;
     }
 
     async validate(payload: JwtPayload): Promise<User> {

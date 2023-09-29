@@ -1,5 +1,7 @@
 import { Exclude } from "class-transformer";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+
+import { Institute } from "src/institute/entities/institute.entity";
 
 @Entity()
 export class User {
@@ -12,4 +14,7 @@ export class User {
     @Column()
     @Exclude()
     password: string;
+
+    @OneToOne(type => Institute, institute => institute.user)
+    institute: Institute;
 }

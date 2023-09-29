@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { InstituteService } from './institute.service';
-import { InstituteController } from './institute.controller';
-import { Institute } from './entities/institute.entity';
+import { InstituteService } from 'src/institute/institute.service';
+import { InstituteController } from 'src/institute/institute.controller';
+import { Institute } from 'src/institute/entities/institute.entity';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
@@ -12,4 +12,4 @@ import { AuthModule } from 'src/auth/auth.module';
   controllers: [InstituteController],
   providers: [InstituteService],
 })
-export class InstituteModule {}
+export class InstituteModule { }

@@ -3,9 +3,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 // local imports
-import { InstituteModule } from './institute/institute.module';
-import { configValidationSchema } from './config.schema';
-import { AuthModule } from './auth/auth.module';
+import { InstituteModule } from 'src/institute/institute.module';
+import { configValidationSchema } from 'src/config.schema';
+import { AuthModule } from 'src/auth/auth.module';
 
 
 @Module({

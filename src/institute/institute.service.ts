@@ -3,9 +3,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 // local imports
-import { CreateInstituteDto } from './dto/create-institute.dto';
-import { UpdateInstituteDto } from './dto/update-institute.dto';
-import { Institute } from './entities/institute.entity';
+import { CreateInstituteDto } from 'src/institute/dto/create-institute.dto';
+import { UpdateInstituteDto } from 'src/institute/dto/update-institute.dto';
+import { Institute } from 'src/institute/entities/institute.entity';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class InstituteService {
@@ -15,24 +16,25 @@ export class InstituteService {
     this.institute = institute;
   }
 
-  async create(createInstituteDto: CreateInstituteDto): Promise<Institute> {
+  async create(createInstituteDto: CreateInstituteDto, user: User): Promise<Institute> {
     const { name, email, description, subjects } = createInstituteDto;
     const institute = this.institute.create({
       name,
       email,
       description,
-      subjects
+      subjects,
+      user
     });
-
+    console.log(institute);
     return await this.institute.save(institute);
   }
 
-  async findAll(): Promise<Institute[]> {
-    return await this.institute.find();
+  async findAll(user: User): Promise<Institute[]> {
+    return await this.institute.find({ where: { user: { id: user.id } } });
   }
 
-  async findOne(id: number): Promise<Institute> {
-    const institute = await this.institute.findOneBy({ id });
+  async findOne(id: number, user: User): Promise<Institute> {
+    const institute = await this.institute.findOne({ where: { id, user: { id: user.id } } });
 
     if (!institute) {
       throw new NotFoundException(`institute with id ${id} not found.`);
@@ -41,8 +43,8 @@ export class InstituteService {
     return institute;
   }
 
-  async update(id: number, updateInstituteDto: UpdateInstituteDto): Promise<Institute> {
-    let institute = await this.findOne(id);
+  async update(id: number, updateInstituteDto: UpdateInstituteDto, user: User): Promise<Institute> {
+    let institute = await this.findOne(id, user);
 
     if (institute) {
       const updateFields = Object.keys(updateInstituteDto);
@@ -58,8 +60,8 @@ export class InstituteService {
     return institute;
   }
 
-  async remove(id: number): Promise<object> {
-    const result = await this.institute.delete(id);
+  async remove(id: number, user: User): Promise<object> {
+    const result = await this.institute.delete({ id, user: { id: user.id } });
 
     if (result.affected === 0) {
       throw new NotFoundException(`institute with id ${id} not found.`);

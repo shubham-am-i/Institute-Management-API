@@ -12,6 +12,7 @@ async function bootstrap() {
     })
   );
   app.useGlobalFilters(new HttpExceptionFilter());
-  await app.listen(3000);
+  const port = process.env.PORT;
+  await app.listen(port);
 }
 bootstrap();

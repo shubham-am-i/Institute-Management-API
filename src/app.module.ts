@@ -25,7 +25,7 @@ import { AuthModule } from 'src/auth/auth.module';
         username: configService.getOrThrow('DB_USERNAME'),
         password: configService.getOrThrow('DB_PASSWORD'),
         database: configService.getOrThrow('DB_DATABASE'),
-        synchronize: true
+        synchronize: true // false in production. Handled by performing migration
       })
     }),
     InstituteModule,

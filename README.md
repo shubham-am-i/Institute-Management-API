@@ -46,3 +46,5 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+![Screenshot from 2023-09-29 12-09-09](https://github.com/shubham-am-i/Institute-Management-API/assets/88419331/7bd32f11-0680-47a4-9e6a-63159e2774bb)
+
